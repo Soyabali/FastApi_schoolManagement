@@ -1,0 +1,13 @@
+# Render Blueprint: https://render.com/docs/blueprint-spec
+# Render -> New -> Blueprint -> pick this repo. It will ask you for DATABASE_URL.
+services:
+  - type: web
+    name: fastapi-school-management
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        sync: false # secret: Render asks you to paste it, it is never stored in GitHub

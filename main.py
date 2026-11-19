@@ -3,7 +3,7 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from auth import router as auth_router
-from database import get_db
+from database import engine, get_db
 from school import school_routers
 
 app = FastAPI(
@@ -22,7 +22,7 @@ def read_root():
 
 @app.get("/health", tags=["Health"])
 def health():
-    return {"status": "ok"}
+    return {"status": "ok", "database_configured": engine is not None}
 
 
 @app.get("/db-check", tags=["Health"])
