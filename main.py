@@ -15,7 +15,7 @@ for r in school_routers:
     app.include_router(r)
 
 
-@app.get("/", tags=["Health"])
+@app.api_route("/", methods=["GET", "HEAD"], tags=["Health"])
 def read_root():
     return {"message": "Hello, FastAPI!"}
 
