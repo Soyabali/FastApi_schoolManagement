@@ -6,11 +6,14 @@ from sqlalchemy.orm import sessionmaker
 
 load_dotenv()  # reads .env locally; on Render the variable comes from the dashboard
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = (os.getenv("DATABASE_URL") or "").strip().strip("'\"")
 if not DATABASE_URL:
+    # Show similar variable names (never values) to catch typos like "DATABASE_URL " or "database_url".
+    similar = [k for k in os.environ if "DATABASE" in k.upper() or "DB" in k.upper()]
     raise RuntimeError(
-        "DATABASE_URL is not set. Locally, put it in .env. "
-        "On Render, add it under your service -> Environment -> Environment Variables."
+        "DATABASE_URL is not set or empty. Locally, put it in .env. "
+        "On Render, add it under your service -> Environment -> Environment Variables. "
+        f"Similar variable names found: {similar or 'none'}"
     )
 
 # Tell SQLAlchemy to use the psycopg (v3) driver.
