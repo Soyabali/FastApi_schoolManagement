@@ -4,9 +4,14 @@ from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-load_dotenv()
+load_dotenv()  # reads .env locally; on Render the variable comes from the dashboard
 
-DATABASE_URL = os.environ["DATABASE_URL"]
+DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    raise RuntimeError(
+        "DATABASE_URL is not set. Locally, put it in .env. "
+        "On Render, add it under your service -> Environment -> Environment Variables."
+    )
 
 # Tell SQLAlchemy to use the psycopg (v3) driver.
 if DATABASE_URL.startswith("postgresql://"):
