@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 
 from auth import router as auth_router
 from database import engine, get_db
+from postman import router as postman_router
 from school import school_routers
 
 app = FastAPI(
@@ -13,6 +14,7 @@ app = FastAPI(
 app.include_router(auth_router)
 for r in school_routers:
     app.include_router(r)
+app.include_router(postman_router)
 
 
 @app.api_route("/", methods=["GET", "HEAD"], tags=["Health"])
